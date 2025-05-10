@@ -1,0 +1,72 @@
+{
+	"name": "AzureSqlServer",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ParameterAzureSql",
+						"type": "DatasetReference"
+					},
+					"name": "Department"
+				},
+				{
+					"dataset": {
+						"referenceName": "ParameterAzureSql",
+						"type": "DatasetReference"
+					},
+					"name": "Employee"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Class18_DataFlow_Parameter_DataSet",
+						"type": "DatasetReference"
+					},
+					"name": "SinkDepartmentEmployee"
+				}
+			],
+			"transformations": [
+				{
+					"name": "JoinDepartmentEmployee"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     uniqueColmns as string ('DepartmentID.DepartmentName')",
+				"}",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Department",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Employee",
+				"Department, Employee join($uniqueColmns == $uniqueColmns,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     partitionBy('hash', 1),",
+				"     broadcast: 'right')~> JoinDepartmentEmployee",
+				"JoinDepartmentEmployee sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          year as string,",
+				"          rank as string,",
+				"          country as string,",
+				"          state as string,",
+				"          gdp as string,",
+				"          gdp_percent as string",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SinkDepartmentEmployee"
+			]
+		}
+	}
+}
