@@ -1,0 +1,12 @@
+{
+	"name": "integrationRuntime1",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/ff6ea745-bd32-44f0-8c01-8fd7e7f5f1a4/resourcegroups/rg-testdata-centralindia-001/providers/Microsoft.DataFactory/factories/my-adftest001/integrationruntimes/integrationRuntime1",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

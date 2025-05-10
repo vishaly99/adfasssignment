@@ -1,0 +1,17 @@
+{
+	"name": "SqlServerCustomer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "VishalSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Customer"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
