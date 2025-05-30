@@ -137,7 +137,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
-											"value": "@replace(item().name,'sales',concat('sales_',formatDateTime(utcNow(),'yyyy-MM-dd')))",
+											"value": "@concat('sales_', formatDateTime(utcNow(),'yyyy-MM-dd_HH-mm'))",
 											"type": "Expression"
 										}
 									}
