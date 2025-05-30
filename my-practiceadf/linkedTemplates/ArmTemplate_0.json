@@ -602,7 +602,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "metadata.csv",
+						"fileName": "Customer (1).csv",
 						"fileSystem": "input"
 					},
 					"columnDelimiter": ",",
