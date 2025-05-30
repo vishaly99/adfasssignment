@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "my-practiceadf"
+		},
+		"AzureBlobStorage_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"VishalSqlServer_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://sttestdatalake001.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "vishalsqlserver001.database.windows.net"
+		},
+		"AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "@{linkedService().Databasename}"
+		},
+		"AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "@{linkedService().Username}"
+		},
+		"VishalSqlServer_properties_typeProperties_server": {
+			"value": "GAXL-PG034X7F\\SQLEXPRESS"
+		},
+		"VishalSqlServer_properties_typeProperties_database": {
+			"value": "customerdb"
+		},
+		"VishalSqlServer_properties_typeProperties_userName": {
+			"value": "root"
+		},
+		"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/ff6ea745-bd32-44f0-8c01-8fd7e7f5f1a4/resourcegroups/rg-testdata-centralindia-001/providers/Microsoft.DataFactory/factories/my-adftest001/integrationruntimes/integrationRuntime1"
+		}
+	}
+}
