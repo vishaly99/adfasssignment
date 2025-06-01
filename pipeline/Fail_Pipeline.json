@@ -1,0 +1,27 @@
+{
+	"name": "Fail_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var1",
+					"value": "vishal"
+				}
+			}
+		],
+		"variables": {
+			"var1": {
+				"type": "Boolean"
+			}
+		},
+		"annotations": []
+	}
+}
