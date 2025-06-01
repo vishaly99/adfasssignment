@@ -91,9 +91,6 @@
 					"AzureSqlDatabase_password": {
 						"value": "[parameters('AzureSqlDatabase_password')]"
 					},
-					"VishalSqlServer_password": {
-						"value": "[parameters('VishalSqlServer_password')]"
-					},
 					"AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
@@ -108,15 +105,6 @@
 					},
 					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
-					},
-					"VishalSqlServer_properties_typeProperties_server": {
-						"value": "[parameters('VishalSqlServer_properties_typeProperties_server')]"
-					},
-					"VishalSqlServer_properties_typeProperties_database": {
-						"value": "[parameters('VishalSqlServer_properties_typeProperties_database')]"
-					},
-					"VishalSqlServer_properties_typeProperties_userName": {
-						"value": "[parameters('VishalSqlServer_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -135,11 +123,43 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"VishalSqlServer_password": {
+						"value": "[parameters('VishalSqlServer_password')]"
+					},
+					"VishalSqlServer_properties_typeProperties_server": {
+						"value": "[parameters('VishalSqlServer_properties_typeProperties_server')]"
+					},
+					"VishalSqlServer_properties_typeProperties_database": {
+						"value": "[parameters('VishalSqlServer_properties_typeProperties_database')]"
+					},
+					"VishalSqlServer_properties_typeProperties_userName": {
+						"value": "[parameters('VishalSqlServer_properties_typeProperties_userName')]"
 					}
 				}
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "my-practiceadf_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_1')]"
 			]
 		}
 	]
