@@ -69,7 +69,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Increment Retry",
+										"name": "Temp Increment Retry",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"policy": {
@@ -78,7 +78,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"variableName": "retryCount",
+											"variableName": "temp",
 											"value": {
 												"value": "@add(variables('retryCount'),1)",
 												"type": "Expression"
@@ -106,6 +106,8 @@
 												{
 													"name": "Log Failure",
 													"type": "StoredProcedure",
+													"state": "Inactive",
+													"onInactiveMarkAs": "Succeeded",
 													"dependsOn": [],
 													"policy": {
 														"retry": 0,
@@ -131,6 +133,8 @@
 												{
 													"name": "Send Email Notification",
 													"type": "WebActivity",
+													"state": "Inactive",
+													"onInactiveMarkAs": "Succeeded",
 													"dependsOn": [],
 													"policy": {
 														"retry": 0,
@@ -150,8 +154,55 @@
 															"message": "Ingestion failed after 3 retries."
 														}
 													}
+												},
+												{
+													"name": "Set variable1",
+													"type": "SetVariable",
+													"dependsOn": [],
+													"policy": {
+														"secureOutput": false,
+														"secureInput": false
+													},
+													"userProperties": [],
+													"typeProperties": {
+														"variableName": "pipelineReturnValue",
+														"value": [
+															{
+																"key": "varsuccess",
+																"value": {
+																	"type": "String",
+																	"content": "email sent"
+																}
+															}
+														],
+														"setSystemVariable": true
+													}
 												}
 											]
+										}
+									},
+									{
+										"name": "Increment Retry",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "Temp Increment Retry",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "retryCount",
+											"value": {
+												"value": "@variables('temp')",
+												"type": "Expression"
+											}
 										}
 									}
 								],
@@ -168,7 +219,7 @@
 										"typeProperties": {
 											"variableName": "isSuccess",
 											"value": {
-												"value": "true",
+												"value": "@activity('Execute Ingestion').output",
 												"type": "Expression"
 											}
 										}
@@ -188,6 +239,13 @@
 			"isSuccess": {
 				"type": "Bool",
 				"defaultValue": "false"
+			},
+			"regionTrue": {
+				"type": "Array"
+			},
+			"temp": {
+				"type": "Integer",
+				"defaultValue": 0
 			}
 		},
 		"annotations": []
