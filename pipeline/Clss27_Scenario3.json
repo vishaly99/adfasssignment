@@ -9,49 +9,149 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(variables('counter'),3)",
+						"value": "@not(variables('status'))",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "Set Temp",
-							"type": "SetVariable",
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"policy": {
-								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "temp",
-								"value": {
-									"value": "@add(variables('counter'),1)",
-									"type": "Expression"
-								}
+								"pipeline": {
+									"referenceName": "Fail_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
 							}
 						},
 						{
-							"name": "Set Counter",
-							"type": "SetVariable",
+							"name": "If Condition1",
+							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "Set Temp",
+									"activity": "Execute Pipeline1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
 								}
 							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "counter",
-								"value": {
-									"value": "@variables('temp')",
+								"expression": {
+									"value": "@equals(activity('Execute Pipeline1').output.status,'Succeeded')",
 									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Set Temp",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "temp",
+											"value": {
+												"value": "@add(variables('counter'),1)",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "Set Counter",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "Set Temp",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "counter",
+											"value": {
+												"value": "@variables('temp')",
+												"type": "Expression"
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Set variable1",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "status",
+											"value": {
+												"value": "@activity('Execute Pipeline1').output",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "If Condition2",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "If Condition1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(variables('counter'),3)",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Set variable2",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "pipelineReturnValue",
+											"value": [
+												{
+													"key": "finalvalue",
+													"value": {
+														"type": "String",
+														"content": "sent email"
+													}
+												}
+											],
+											"setSystemVariable": true
+										}
+									}
+								]
 							}
 						}
 					],
@@ -67,6 +167,9 @@
 			"temp": {
 				"type": "Integer",
 				"defaultValue": 0
+			},
+			"status": {
+				"type": "Boolean"
 			}
 		},
 		"annotations": []
