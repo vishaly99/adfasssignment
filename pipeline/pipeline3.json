@@ -1,0 +1,61 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "dayOfWeek",
+					"value": {
+						"value": "@dayOfWeek(utcNow())",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(equals(variables('dayOfWeek'),0),equals(variables('dayOfWeek'), 6))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"regionList": {
+				"type": "array",
+				"defaultValue": [
+					"India",
+					"US",
+					"EU",
+					"APAC",
+					"MEA"
+				]
+			}
+		},
+		"variables": {
+			"dayOfWeek": {
+				"type": "Integer"
+			}
+		},
+		"annotations": []
+	}
+}
