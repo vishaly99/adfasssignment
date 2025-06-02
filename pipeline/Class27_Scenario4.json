@@ -5,6 +5,8 @@
 			{
 				"name": "If Condition1",
 				"type": "IfCondition",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set variable4",
@@ -98,6 +100,8 @@
 			{
 				"name": "Set variable4",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureOutput": false,
@@ -110,6 +114,47 @@
 						"value": "@dayOfWeek(utcNow())",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Filter3",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Set variable5",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('finalvalue')",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item(),'MEA')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable5",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "finalvalue",
+					"value": [
+						"EU",
+						"APAC",
+						"MEA"
+					]
 				}
 			}
 		],
@@ -136,6 +181,9 @@
 			},
 			"vartue": {
 				"type": "String"
+			},
+			"finalvalue": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
