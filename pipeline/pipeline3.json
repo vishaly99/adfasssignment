@@ -3,28 +3,16 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SetDayName",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "dayName",
-					"value": {
-						"value": "@['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][dayOfWeek(utcNow())]",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "If Condition1",
 				"type": "IfCondition",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable4",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -48,7 +36,7 @@
 										"key": "varfalse",
 										"value": {
 											"type": "String",
-											"content": "weekdays"
+											"content": "EU APAC MEA"
 										}
 									}
 								],
@@ -73,7 +61,7 @@
 										"key": "varoutput",
 										"value": {
 											"type": "String",
-											"content": "weekend"
+											"content": "india and usa"
 										}
 									}
 								],
@@ -81,6 +69,23 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Set variable4",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "dayOfWeek",
+					"value": {
+						"value": "@dayOfWeek(utcNow())",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -98,7 +103,7 @@
 		},
 		"variables": {
 			"dayOfWeek": {
-				"type": "Array"
+				"type": "Integer"
 			}
 		},
 		"annotations": []
