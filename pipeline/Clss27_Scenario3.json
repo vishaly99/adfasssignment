@@ -169,7 +169,7 @@
 				"defaultValue": 0
 			},
 			"status": {
-				"type": "Boolean"
+				"type": "String"
 			}
 		},
 		"annotations": []
