@@ -98,7 +98,7 @@
 				]
 			},
 			"regionFalse": {
-				"type": "string",
+				"type": "array",
 				"defaultValue": [
 					"EU",
 					"APAC",
