@@ -23,6 +23,8 @@
 						{
 							"name": "Set variable3",
 							"type": "SetVariable",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureOutput": false,
@@ -36,12 +38,30 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Filter2",
+							"type": "Filter",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@pipeline().parameters.regionFalse",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
 						}
 					],
 					"ifTrueActivities": [
 						{
 							"name": "Set variable2",
 							"type": "SetVariable",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureOutput": false,
@@ -52,6 +72,22 @@
 								"variableName": "vartue",
 								"value": {
 									"value": "@string(pipeline().parameters.regionTrue)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Filter1",
+							"type": "Filter",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@pipeline().parameters.regionTrue",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@item()",
 									"type": "Expression"
 								}
 							}
