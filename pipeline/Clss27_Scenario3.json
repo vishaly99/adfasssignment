@@ -1,6 +1,74 @@
 {
 	"name": "Clss27_Scenario3",
 	"properties": {
+		"activities": [
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('counter'),3)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set Temp",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "temp",
+								"value": {
+									"value": "@add(variables('counter'),1)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Temp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "counter",
+								"value": {
+									"value": "@variables('temp')",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "00:05:00"
+				}
+			}
+		],
+		"variables": {
+			"counter": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"temp": {
+				"type": "Integer",
+				"defaultValue": 0
+			}
+		},
 		"annotations": []
 	}
 }
