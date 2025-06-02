@@ -30,17 +30,11 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "pipelineReturnValue",
-								"value": [
-									{
-										"key": "weekdays",
-										"value": {
-											"type": "Object",
-											"content": "@pipeline().parameters.regionFalse"
-										}
-									}
-								],
-								"setSystemVariable": true
+								"variableName": "vartue",
+								"value": {
+									"value": "@string(pipeline().parameters.regionFalse)",
+									"type": "Expression"
+								}
 							}
 						}
 					],
@@ -55,17 +49,11 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "pipelineReturnValue",
-								"value": [
-									{
-										"key": "weekendlist",
-										"value": {
-											"type": "Object",
-											"content": "@pipeline().parameters.regionTrue"
-										}
-									}
-								],
-								"setSystemVariable": true
+								"variableName": "vartue",
+								"value": {
+									"value": "@string(pipeline().parameters.regionTrue)",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -109,6 +97,9 @@
 		"variables": {
 			"dayOfWeek": {
 				"type": "Integer"
+			},
+			"vartue": {
+				"type": "String"
 			}
 		},
 		"annotations": []
