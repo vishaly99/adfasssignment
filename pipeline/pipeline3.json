@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "dayOfWeek",
 					"value": {
-						"value": "@dayOfWeek(utcNow())",
+						"value": "@(['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], dayOfWeek(utcNow()))\n",
 						"type": "Expression"
 					}
 				}
@@ -22,6 +22,8 @@
 			{
 				"name": "If Condition1",
 				"type": "IfCondition",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Set variable1",
