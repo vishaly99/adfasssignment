@@ -1,0 +1,195 @@
+{
+	"name": "pl_retry_ingestion",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set Variables",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "retryCount",
+					"value": ""
+				}
+			},
+			{
+				"name": "Retry Until Success",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set Variables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(variables('isSuccess'))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Execute Ingestion",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Fail_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						},
+						{
+							"name": "Check Success",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Execute Ingestion",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(activity('Execute Ingestion').output.status, 'Succeeded')",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Increment Retry",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "retryCount",
+											"value": {
+												"value": "@add(variables('retryCount'),1)",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "Check Retry Limit",
+										"type": "IfCondition",
+										"dependsOn": [
+											{
+												"activity": "Increment Retry",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"expression": {
+												"value": "@equals(variables('retryCount'), 3)",
+												"type": "Expression"
+											},
+											"ifTrueActivities": [
+												{
+													"name": "Log Failure",
+													"type": "StoredProcedure",
+													"dependsOn": [],
+													"policy": {
+														"retry": 0,
+														"retryIntervalInSeconds": 30,
+														"secureOutput": false,
+														"secureInput": false
+													},
+													"userProperties": [],
+													"typeProperties": {
+														"storedProcedureName": "sp_log_failure",
+														"storedProcedureParameters": {
+															"message": {
+																"value": "Ingestion failed after 3 attempts.",
+																"type": "String"
+															}
+														}
+													},
+													"linkedServiceName": {
+														"referenceName": "LS_SQL_LogDB",
+														"type": "LinkedServiceReference"
+													}
+												},
+												{
+													"name": "Send Email Notification",
+													"type": "WebActivity",
+													"dependsOn": [],
+													"policy": {
+														"retry": 0,
+														"retryIntervalInSeconds": 30,
+														"secureOutput": false,
+														"secureInput": false
+													},
+													"userProperties": [],
+													"typeProperties": {
+														"method": "POST",
+														"headers": {
+															"Content-Type": "application/json"
+														},
+														"url": "<LogicAppTriggerURL>",
+														"body": {
+															"subject": "Data Ingestion Failure",
+															"message": "Ingestion failed after 3 retries."
+														}
+													}
+												}
+											]
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Set Success True",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "isSuccess",
+											"value": {
+												"value": "true",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"retryCount": {
+				"type": "Int",
+				"defaultValue": "0"
+			},
+			"isSuccess": {
+				"type": "Bool",
+				"defaultValue": "false"
+			}
+		},
+		"annotations": []
+	}
+}
