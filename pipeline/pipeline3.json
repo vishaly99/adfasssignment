@@ -33,10 +33,10 @@
 								"variableName": "pipelineReturnValue",
 								"value": [
 									{
-										"key": "varfalse",
+										"key": "weekdays",
 										"value": {
-											"type": "String",
-											"content": "EU APAC MEA"
+											"type": "Object",
+											"content": "@pipeline().parameters.regionFalse"
 										}
 									}
 								],
@@ -58,10 +58,10 @@
 								"variableName": "pipelineReturnValue",
 								"value": [
 									{
-										"key": "varoutput",
+										"key": "weekendlist",
 										"value": {
-											"type": "String",
-											"content": "india and usa"
+											"type": "Object",
+											"content": "@pipeline().parameters.regionTrue"
 										}
 									}
 								],
@@ -90,11 +90,16 @@
 			}
 		],
 		"parameters": {
-			"regionList": {
+			"regionTrue": {
 				"type": "array",
 				"defaultValue": [
 					"India",
-					"US",
+					"US"
+				]
+			},
+			"regionFalse": {
+				"type": "string",
+				"defaultValue": [
 					"EU",
 					"APAC",
 					"MEA"
