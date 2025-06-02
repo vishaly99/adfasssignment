@@ -16,8 +16,6 @@
 						{
 							"name": "Execute Pipeline1",
 							"type": "ExecutePipeline",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureInput": false
@@ -34,11 +32,9 @@
 						{
 							"name": "If Condition1",
 							"type": "IfCondition",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "Execute Pipeline1",
+									"activity": "Set variable3",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -47,7 +43,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@equals(activity('Execute Pipeline1').output.status,'Succeeded')",
+									"value": "@equals(variables('status'),'true')",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -119,7 +115,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "Set Counter_copy1",
+									"activity": "If Condition1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -159,30 +155,13 @@
 							}
 						},
 						{
-							"name": "Set Temp_copy1",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "temp",
-								"value": {
-									"value": "@add(variables('counter'),1)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Set Counter_copy1",
+							"name": "Set variable3",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Set Temp_copy1",
+									"activity": "Execute Pipeline1",
 									"dependencyConditions": [
-										"Succeeded"
+										"Failed"
 									]
 								}
 							],
@@ -192,11 +171,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "counter",
-								"value": {
-									"value": "@variables('temp')",
-									"type": "Expression"
-								}
+								"variableName": "status",
+								"value": "false"
 							}
 						}
 					],
