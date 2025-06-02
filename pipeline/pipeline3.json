@@ -35,7 +35,57 @@
 					"expression": {
 						"value": "@or(equals(variables('dayOfWeek'),0),equals(variables('dayOfWeek'), 6))",
 						"type": "Expression"
-					}
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable3",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pipelineReturnValue",
+								"value": [
+									{
+										"key": "varfalse",
+										"value": {
+											"type": "String",
+											"content": "weekdays"
+										}
+									}
+								],
+								"setSystemVariable": true
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pipelineReturnValue",
+								"value": [
+									{
+										"key": "varoutput",
+										"value": {
+											"type": "String",
+											"content": "weekend"
+										}
+									}
+								],
+								"setSystemVariable": true
+							}
+						}
+					]
 				}
 			}
 		],
