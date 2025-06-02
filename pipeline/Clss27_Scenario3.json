@@ -9,13 +9,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(variables('status'))",
+						"value": "@equals(variables('counter'), 3)",
 						"type": "Expression"
 					},
 					"activities": [
 						{
 							"name": "Execute Pipeline1",
 							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureInput": false
@@ -32,6 +34,8 @@
 						{
 							"name": "If Condition1",
 							"type": "IfCondition",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Execute Pipeline1",
@@ -101,7 +105,10 @@
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "status",
-											"value": ""
+											"value": {
+												"value": "success",
+												"type": "Expression"
+											}
 										}
 									}
 								]
@@ -112,7 +119,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "If Condition1",
+									"activity": "Set Counter_copy1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -150,6 +157,47 @@
 									}
 								]
 							}
+						},
+						{
+							"name": "Set Temp_copy1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "temp",
+								"value": {
+									"value": "@add(variables('counter'),1)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Counter_copy1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Temp_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "counter",
+								"value": {
+									"value": "@variables('temp')",
+									"type": "Expression"
+								}
+							}
 						}
 					],
 					"timeout": "00:05:00"
@@ -166,8 +214,7 @@
 				"defaultValue": 0
 			},
 			"status": {
-				"type": "Boolean",
-				"defaultValue": false
+				"type": "String"
 			}
 		},
 		"annotations": []
