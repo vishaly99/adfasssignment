@@ -13,7 +13,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "retryCount",
-					"value": ""
+					"value": {
+						"value": "@variables('temp')",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -102,6 +105,31 @@
 												"value": "@equals(variables('retryCount'), 3)",
 												"type": "Expression"
 											},
+											"ifFalseActivities": [
+												{
+													"name": "Set variable2",
+													"type": "SetVariable",
+													"dependsOn": [],
+													"policy": {
+														"secureOutput": false,
+														"secureInput": false
+													},
+													"userProperties": [],
+													"typeProperties": {
+														"variableName": "pipelineReturnValue",
+														"value": [
+															{
+																"key": "vartwo",
+																"value": {
+																	"type": "String",
+																	"content": "false"
+																}
+															}
+														],
+														"setSystemVariable": true
+													}
+												}
+											],
 											"ifTrueActivities": [
 												{
 													"name": "Log Failure",
@@ -227,21 +255,19 @@
 								]
 							}
 						}
-					]
+					],
+					"timeout": "00:05:00"
 				}
 			}
 		],
 		"variables": {
 			"retryCount": {
-				"type": "Int",
-				"defaultValue": "0"
+				"type": "Integer",
+				"defaultValue": 0
 			},
 			"isSuccess": {
-				"type": "Bool",
-				"defaultValue": "false"
-			},
-			"regionTrue": {
-				"type": "Array"
+				"type": "Boolean",
+				"defaultValue": false
 			},
 			"temp": {
 				"type": "Integer",
