@@ -101,10 +101,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"variableName": "status",
-											"value": {
-												"value": "@activity('Execute Pipeline1').output",
-												"type": "Expression"
-											}
+											"value": ""
 										}
 									}
 								]
@@ -169,7 +166,8 @@
 				"defaultValue": 0
 			},
 			"status": {
-				"type": "String"
+				"type": "Boolean",
+				"defaultValue": false
 			}
 		},
 		"annotations": []
