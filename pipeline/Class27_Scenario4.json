@@ -260,11 +260,18 @@
 			{
 				"name": "ForEach2",
 				"type": "ForEach",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Filter3_copy2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Filter3').output.Value",
+						"value": "@activity('Filter3_copy2').output.Value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -287,6 +294,29 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Filter3_copy2",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Set variable5",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('finalvalue')",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(or(contains(item(),'India'),contains(item(),'US')))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
