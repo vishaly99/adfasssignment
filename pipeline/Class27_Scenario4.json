@@ -23,38 +23,58 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "Set variable3",
-							"type": "SetVariable",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "vartue",
-								"value": {
-									"value": "@string(pipeline().parameters.regionFalse)",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Filter2",
+							"name": "Filter3_copy1_copy1",
 							"type": "Filter",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
-									"value": "@pipeline().parameters.regionFalse",
+									"value": "@variables('finalvalue')",
 									"type": "Expression"
 								},
 								"condition": {
-									"value": "@item()",
+									"value": "@not(or(contains(item(),'India'),contains(item(),'US')))",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "ForEach1_copy1_copy1",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Filter3_copy1_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Filter3_copy1_copy1').output.Value",
+									"type": "Expression"
+								},
+								"isSequential": true,
+								"activities": [
+									{
+										"name": "Set variable6_copy1_copy1",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "vartue",
+											"value": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								]
 							}
 						}
 					],
@@ -79,19 +99,58 @@
 							}
 						},
 						{
-							"name": "Filter1",
+							"name": "Filter3_copy1",
 							"type": "Filter",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"items": {
-									"value": "@pipeline().parameters.regionTrue",
+									"value": "@variables('finalvalue')",
 									"type": "Expression"
 								},
 								"condition": {
-									"value": "@item()",
+									"value": "@or(contains(item(),'India'),contains(item(),'US'))",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "ForEach1_copy1",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Filter3_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Filter3').output.Value",
+									"type": "Expression"
+								},
+								"isSequential": true,
+								"activities": [
+									{
+										"name": "Set variable6_copy1",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "vartue",
+											"value": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								]
 							}
 						}
 					]
@@ -134,7 +193,7 @@
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@equals(item(),'MEA')",
+						"value": "@or(contains(item(),'India'),contains(item(),'US'))",
 						"type": "Expression"
 					}
 				}
@@ -151,9 +210,82 @@
 				"typeProperties": {
 					"variableName": "finalvalue",
 					"value": [
+						"India",
+						"US",
 						"EU",
 						"APAC",
 						"MEA"
+					]
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter3').output.Value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set variable6",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vartue",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach2",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter3').output.Value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set variable7",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vartue",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						}
 					]
 				}
 			}
