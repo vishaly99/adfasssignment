@@ -91,6 +91,8 @@
 									{
 										"name": "Check Retry Limit",
 										"type": "IfCondition",
+										"state": "Inactive",
+										"onInactiveMarkAs": "Succeeded",
 										"dependsOn": [
 											{
 												"activity": "Increment Retry",
