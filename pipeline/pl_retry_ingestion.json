@@ -40,6 +40,8 @@
 						{
 							"name": "Execute Ingestion",
 							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureInput": false
@@ -56,6 +58,8 @@
 						{
 							"name": "Check Success",
 							"type": "IfCondition",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Execute Ingestion",
