@@ -29,6 +29,101 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Class27_DynamicFileName_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"fileSystem": "output"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Class27_DynamicFilenameSource_Two')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": "input/Files",
+						"fileSystem": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Class27_DynamicFilesSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "input/Files",
+						"fileSystem": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Class6_ListofFiles_InputContainer')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -179,6 +274,94 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCD_AzureSqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"Servername": "vishalsqlserver001",
+						"Databasename": "vishalsqldatabase",
+						"Username": "vishalroot"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "empid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "firstname",
+						"type": "varchar"
+					},
+					{
+						"name": "salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "location",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "empscdone"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCD_One_LinkdedService_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Employee.csv",
+						"folderPath": "input/SCD",
+						"fileSystem": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EmployeeID",
+						"type": "String"
+					},
+					{
+						"name": "FirstName",
+						"type": "String"
+					},
+					{
+						"name": "Salary",
+						"type": "String"
+					},
+					{
+						"name": "Location",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -367,7 +550,11 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Class27_DynamicFilesSource')]",
+				"[concat(variables('factoryId'), '/datasets/Class27_DynamicFilenameSource_Two')]",
+				"[concat(variables('factoryId'), '/datasets/Class27_DynamicFileName_Sink')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Class27_ScenarioOne')]",
@@ -1146,825 +1333,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ParameterAzureSql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UnionDataFlow')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "Class18_DataFlow_Parameter_DataSet",
-								"type": "DatasetReference"
-							},
-							"name": "DepartmentSource"
-						},
-						{
-							"dataset": {
-								"referenceName": "Class18_DataFlow_Parameter_DataSet",
-								"type": "DatasetReference"
-							},
-							"name": "EmployeeSource"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "Class18_DataFlow_Parameter_DataSet",
-								"type": "DatasetReference"
-							},
-							"name": "SinkDataLake",
-							"rejectedDataLinkedService": {
-								"referenceName": "AzureDataLakeStorage",
-								"type": "LinkedServiceReference"
-							}
-						}
-					],
-					"transformations": [
-						{
-							"name": "UnionDepartmentEmployee"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          DepartmentID as short,",
-						"          DepartmentName as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> DepartmentSource",
-						"source(output(",
-						"          EmployeeID as short,",
-						"          FirstName as string,",
-						"          LastName as string,",
-						"          DateOfBirth as date 'MM/dd/yyyy',",
-						"          Gender as string,",
-						"          DepartmentID as short,",
-						"          Salary as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     partitionBy('hash', 1)) ~> EmployeeSource",
-						"DepartmentSource, EmployeeSource union(byName: true,",
-						"     partitionBy('hash', 1))~> UnionDepartmentEmployee",
-						"UnionDepartmentEmployee sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          year as string,",
-						"          rank as string,",
-						"          country as string,",
-						"          state as string,",
-						"          gdp as string,",
-						"          gdp_percent as string",
-						"     ),",
-						"     partitionFileNames:['UnionData.csv'],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> SinkDataLake"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Class11_DataLakeDirectoryStructure')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Organize the Data Lake directory structure by year/month/date",
-				"activities": [
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ParameterSqlServerTable",
-											"type": "DatasetReference",
-											"parameters": {
-												"Schema": {
-													"value": "@item().sqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().sqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Parameter_Dataset_DataLake",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().Outputcontainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@concat(formatDateTime(utcNow(),'yyyy'),'/',\nformatDateTime(utcNow(),'MMMM')\n,'/',formatDateTime(utcNow(),'dd'))",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().Outputfile",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "Parameter_Dataset_DataLake",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "input",
-									"Directory": "input",
-									"Filename": "Class11_metadata.csv"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "ForEach2",
-						"type": "ForEach",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [
-							{
-								"activity": "ForEach1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data2",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"preCopyScript": {
-												"value": "@{concat('Truncate table ',item().sqlschema,'.',item().sqltablename)}",
-												"type": "Expression"
-											},
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "Parameter_Dataset_DataLake",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().Outputcontainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().Outputdirectory",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().Outputfile",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ParameterAzureSql",
-											"type": "DatasetReference",
-											"parameters": {
-												"Servername": "vishalsqlserver001",
-												"Databasename": "vishalsqldatabase",
-												"Username": "vishalroot",
-												"Schema": {
-													"value": "@item().azuresqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().azuresqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-05-10T10:19:15Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parameter_Dataset_DataLake')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterSqlServerTable')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterAzureSql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Class11_SQL_AzureSQL')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Learn How to Migrate On-Premise\n SQL Data to Azure SQL Using\n Azure Data Factory",
-				"activities": [
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "Parameter_Dataset_DataLake",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "input",
-									"Directory": "input",
-									"Filename": "Class11_MetaData_V1.csv"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"preCopyScript": {
-												"value": "@{concat('Truncate table ',item().azuresqlschema,'.',item().azuresqltablename)}",
-												"type": "Expression"
-											},
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ParameterSqlServerTable",
-											"type": "DatasetReference",
-											"parameters": {
-												"Schema": {
-													"value": "@item().sqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().sqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ParameterAzureSql",
-											"type": "DatasetReference",
-											"parameters": {
-												"Servername": "vishalsqlserver001",
-												"Databasename": "vishalsqldatabase",
-												"Username": "vishalroot",
-												"Schema": {
-													"value": "@item().azuresqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().azuresqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-05-10T10:19:15Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parameter_Dataset_DataLake')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterSqlServerTable')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterAzureSql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Class11_SQL_DataLake_AzureSQL_FullLoad')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "SqlServerSource",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ParameterSqlServerTable",
-											"type": "DatasetReference",
-											"parameters": {
-												"Schema": {
-													"value": "@item().sqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().sqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Parameter_Dataset_DataLake",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().Outputcontainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().Outputdirectory",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().Outputfile",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "Parameter_Dataset_DataLake",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "input",
-									"Directory": "input",
-									"Filename": "Class11_metadata.csv"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "ForEach2",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "ForEach1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data2",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"preCopyScript": {
-												"value": "@{concat('Truncate table ',item().sqlschema,'.',item().sqltablename)}",
-												"type": "Expression"
-											},
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false,
-											"disableMetricsCollection": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "Parameter_Dataset_DataLake",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": {
-													"value": "@item().Outputcontainer",
-													"type": "Expression"
-												},
-												"Directory": {
-													"value": "@item().Outputdirectory",
-													"type": "Expression"
-												},
-												"Filename": {
-													"value": "@item().Outputfile",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ParameterAzureSql",
-											"type": "DatasetReference",
-											"parameters": {
-												"Servername": "vishalsqlserver001",
-												"Databasename": "vishalsqldatabase",
-												"Username": "vishalroot",
-												"Schema": {
-													"value": "@item().azuresqlschema",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@item().azuresqltablename",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-04-27T14:59:12Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parameter_Dataset_DataLake')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterSqlServerTable')]",
-				"[concat(variables('factoryId'), '/datasets/ParameterAzureSql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Class18_DataFlowJoin_Pipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Join 3 dataset and place all data in data lake",
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "UnionDataFlow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"DepartmentSource": {
-										"FileSystem": "input",
-										"Directory": "input",
-										"Filename": "Department.csv"
-									},
-									"EmployeeSource": {
-										"FileSystem": "input",
-										"Directory": "input",
-										"Filename": "Employee.csv"
-									},
-									"SinkDataLake": {
-										"FileSystem": "output",
-										"Directory": "UnionData",
-										"Filename": "UnionDeprtmentEmployee.csv"
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-05-10T10:19:15Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/UnionDataFlow')]"
 			]
 		}
 	]
