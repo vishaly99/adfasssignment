@@ -40,8 +40,6 @@
 						{
 							"name": "Execute Ingestion",
 							"type": "ExecutePipeline",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"secureInput": false
@@ -58,8 +56,6 @@
 						{
 							"name": "Check Success",
 							"type": "IfCondition",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Execute Ingestion",
@@ -90,129 +86,6 @@
 												"value": "@add(variables('retryCount'),1)",
 												"type": "Expression"
 											}
-										}
-									},
-									{
-										"name": "Check Retry Limit",
-										"type": "IfCondition",
-										"state": "Inactive",
-										"onInactiveMarkAs": "Succeeded",
-										"dependsOn": [
-											{
-												"activity": "Increment Retry",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"userProperties": [],
-										"typeProperties": {
-											"expression": {
-												"value": "@equals(variables('retryCount'), 3)",
-												"type": "Expression"
-											},
-											"ifFalseActivities": [
-												{
-													"name": "Set variable2",
-													"type": "SetVariable",
-													"dependsOn": [],
-													"policy": {
-														"secureOutput": false,
-														"secureInput": false
-													},
-													"userProperties": [],
-													"typeProperties": {
-														"variableName": "pipelineReturnValue",
-														"value": [
-															{
-																"key": "vartwo",
-																"value": {
-																	"type": "String",
-																	"content": "false"
-																}
-															}
-														],
-														"setSystemVariable": true
-													}
-												}
-											],
-											"ifTrueActivities": [
-												{
-													"name": "Log Failure",
-													"type": "StoredProcedure",
-													"state": "Inactive",
-													"onInactiveMarkAs": "Succeeded",
-													"dependsOn": [],
-													"policy": {
-														"retry": 0,
-														"retryIntervalInSeconds": 30,
-														"secureOutput": false,
-														"secureInput": false
-													},
-													"userProperties": [],
-													"typeProperties": {
-														"storedProcedureName": "sp_log_failure",
-														"storedProcedureParameters": {
-															"message": {
-																"value": "Ingestion failed after 3 attempts.",
-																"type": "String"
-															}
-														}
-													},
-													"linkedServiceName": {
-														"referenceName": "LS_SQL_LogDB",
-														"type": "LinkedServiceReference"
-													}
-												},
-												{
-													"name": "Send Email Notification",
-													"type": "WebActivity",
-													"state": "Inactive",
-													"onInactiveMarkAs": "Succeeded",
-													"dependsOn": [],
-													"policy": {
-														"retry": 0,
-														"retryIntervalInSeconds": 30,
-														"secureOutput": false,
-														"secureInput": false
-													},
-													"userProperties": [],
-													"typeProperties": {
-														"method": "POST",
-														"headers": {
-															"Content-Type": "application/json"
-														},
-														"url": "<LogicAppTriggerURL>",
-														"body": {
-															"subject": "Data Ingestion Failure",
-															"message": "Ingestion failed after 3 retries."
-														}
-													}
-												},
-												{
-													"name": "Set variable1",
-													"type": "SetVariable",
-													"dependsOn": [],
-													"policy": {
-														"secureOutput": false,
-														"secureInput": false
-													},
-													"userProperties": [],
-													"typeProperties": {
-														"variableName": "pipelineReturnValue",
-														"value": [
-															{
-																"key": "varsuccess",
-																"value": {
-																	"type": "String",
-																	"content": "email sent"
-																}
-															}
-														],
-														"setSystemVariable": true
-													}
-												}
-											]
 										}
 									},
 									{
