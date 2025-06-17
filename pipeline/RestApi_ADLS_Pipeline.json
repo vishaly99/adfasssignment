@@ -1,0 +1,7 @@
+{
+	"name": "RestApi_ADLS_Pipeline",
+	"properties": {
+		"description": "Copy Data From Rest API to ADLS",
+		"annotations": []
+	}
+}
