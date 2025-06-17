@@ -1,10 +1,11 @@
 {
 	"name": "RestApi_ADLS_Pages_Pipeline_",
 	"properties": {
-		"description": "Copy data from REST API which sends response in Pages",
+		"description": "Copy data from REST API which sends response in Pages\nUse this Websitye:-https://reqres.in/",
 		"activities": [
 			{
 				"name": "Web1",
+				"description": "",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
