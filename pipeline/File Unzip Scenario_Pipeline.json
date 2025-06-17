@@ -18,11 +18,15 @@
 					"source": {
 						"type": "BinarySource",
 						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings"
+							"type": "BinaryReadSettings",
+							"compressionProperties": {
+								"type": "ZipDeflateReadSettings",
+								"preserveZipFileNameAsFolder": false
+							}
 						}
 					},
 					"sink": {
@@ -35,7 +39,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "FileUnzipScenario",
+						"referenceName": "Binary1",
 						"type": "DatasetReference"
 					}
 				],
