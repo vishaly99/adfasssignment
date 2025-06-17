@@ -39,6 +39,18 @@
 			"type": "string",
 			"defaultValue": "@{linkedService().Username}"
 		},
+		"HttpServer1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqblRwYUJkdDVkNUM1U1hLWFYxdVJqTGNxSWJ3Z3xBQ3Jtc0tsWFNDa2pRNmlFX3hQbE15elRQcS14UTNWc1lhNVJRVzVfdnVYZHFnSHA3WVFvUGVMdlNiWGxuU2trS2poUlZnNG95eXk1NUYwRzdzR00xdktaeFJNb1lzeUpCVW9GWDAxUDh4U0xacUZ2LVJicjU1SQ&q=https%3A%2F%2Fdrive.usercontent.google.com%2Fu%2F0%2Fuc%3Fid%3D1bmmtkc5NLZQ4iU6Qz_7di-juuxA2kT1t%26export%3Ddownload&v=NaNZ6kMS8Oo"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://reqres.in/api/users?page=2"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://reqres.in/api/users"
+		},
 		"VishalSqlServer_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "GAXL-PG034X7F\\SQLEXPRESS"
@@ -103,6 +115,15 @@
 					"AzureSqlDatabase_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase_properties_typeProperties_userName')]"
 					},
+					"HttpServer1_properties_typeProperties_url": {
+						"value": "[parameters('HttpServer1_properties_typeProperties_url')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"RestService2_properties_typeProperties_url": {
+						"value": "[parameters('RestService2_properties_typeProperties_url')]"
+					},
 					"integrationRuntime1_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('integrationRuntime1_properties_typeProperties_linkedInfo_resourceId')]"
 					}
@@ -118,6 +139,26 @@
 				"mode": "incremental",
 				"templateLink": {
 					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "my-practiceadf_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -139,17 +180,17 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_0')]"
+				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_1')]"
 			]
 		},
 		{
-			"name": "my-practiceadf_ArmTemplate_2",
+			"name": "my-practiceadf_ArmTemplate_3",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2024-03-01",
 			"properties": {
 				"mode": "incremental",
 				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -159,7 +200,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_1')]"
+				"[resourceId('Microsoft.Resources/deployments', 'my-practiceadf_ArmTemplate_2')]"
 			]
 		}
 	]
