@@ -41,7 +41,7 @@
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://www.sos.wa.gov/_assets/corps/txtCorpsData.zip"
+			"defaultValue": "https://github.com/Pritamsaha627/test_data/raw/refs/heads/main/employees.zip"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -2332,6 +2332,8 @@
 					{
 						"name": "Copy data1",
 						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2381,9 +2383,8 @@
 					},
 					{
 						"name": "Copy data2",
+						"description": "download zip file from API and load into sink path after unzip",
 						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -4087,7 +4088,7 @@
 					},
 					"compression": {
 						"type": "ZipDeflate",
-						"level": "Optimal"
+						"level": "Fastest"
 					}
 				}
 			},

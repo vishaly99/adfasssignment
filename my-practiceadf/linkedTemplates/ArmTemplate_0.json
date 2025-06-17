@@ -37,7 +37,7 @@
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://www.sos.wa.gov/_assets/corps/txtCorpsData.zip"
+			"defaultValue": "https://github.com/Pritamsaha627/test_data/raw/refs/heads/main/employees.zip"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
