@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "https://reqres.in/api/users"
+			"relativeUrl": "https://reqres.in/api/users?page=1"
 		},
 		"schema": []
 	}
