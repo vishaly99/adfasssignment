@@ -54,6 +54,7 @@
 			},
 			{
 				"name": "Copy data2",
+				"description": "download zip file from API and load into sink path after unzip",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
