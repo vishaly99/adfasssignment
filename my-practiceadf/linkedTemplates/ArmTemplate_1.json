@@ -507,6 +507,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "HttpServerLocation"
+					},
+					"compression": {
+						"type": "ZipDeflate",
+						"level": "Optimal"
 					}
 				}
 			},

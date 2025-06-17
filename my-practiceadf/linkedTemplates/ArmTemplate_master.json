@@ -41,7 +41,7 @@
 		},
 		"HttpServer1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqblRwYUJkdDVkNUM1U1hLWFYxdVJqTGNxSWJ3Z3xBQ3Jtc0tsWFNDa2pRNmlFX3hQbE15elRQcS14UTNWc1lhNVJRVzVfdnVYZHFnSHA3WVFvUGVMdlNiWGxuU2trS2poUlZnNG95eXk1NUYwRzdzR00xdktaeFJNb1lzeUpCVW9GWDAxUDh4U0xacUZ2LVJicjU1SQ&q=https%3A%2F%2Fdrive.usercontent.google.com%2Fu%2F0%2Fuc%3Fid%3D1bmmtkc5NLZQ4iU6Qz_7di-juuxA2kT1t%26export%3Ddownload&v=NaNZ6kMS8Oo"
+			"defaultValue": "https://www.sos.wa.gov/_assets/corps/txtCorpsData.zip"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
