@@ -36,7 +36,58 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "['email']"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['first_name']"
+								},
+								"sink": {
+									"name": "first_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['last_name']"
+								},
+								"sink": {
+									"name": "last_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['avatar']"
+								},
+								"sink": {
+									"name": "avatar",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['data']"
+					}
 				},
 				"inputs": [
 					{
