@@ -106,7 +106,8 @@
 								"dataset": {
 									"referenceName": "SkipEmpty_Lookup_LinkedService",
 									"type": "DatasetReference"
-								}
+								},
+								"firstRowOnly": false
 							}
 						},
 						{
