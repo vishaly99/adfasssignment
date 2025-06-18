@@ -26,7 +26,7 @@
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"modifiedDatetimeEnd": {
-							"value": "@addhours(utcNow(),-1)",
+							"value": "@adddays(utcNow(),-3)",
 							"type": "Expression"
 						},
 						"enablePartitionDiscovery": false
@@ -39,8 +39,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata1",
@@ -70,7 +68,28 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"enableLogging": true
+								"dataset": {
+									"referenceName": "Binary2",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage",
+										"type": "LinkedServiceReference"
+									}
+								},
+								"enableLogging": true,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
 							}
 						}
 					]
