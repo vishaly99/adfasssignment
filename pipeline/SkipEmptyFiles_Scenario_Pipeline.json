@@ -1,0 +1,7 @@
+{
+	"name": "SkipEmptyFiles_Scenario_Pipeline",
+	"properties": {
+		"description": "Skip Empty Files scenario",
+		"annotations": []
+	}
+}
