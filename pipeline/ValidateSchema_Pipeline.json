@@ -49,7 +49,9 @@
 						"referenceName": "ValidateSchema_Destination",
 						"type": "DatasetReference"
 					},
-					"fieldList": [],
+					"fieldList": [
+						"structure"
+					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false
