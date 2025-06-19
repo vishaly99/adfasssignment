@@ -1,0 +1,55 @@
+{
+	"name": "LoadMultipleCSVJson_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "output"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Name": {
+					"type": "string"
+				},
+				"Category": {
+					"type": "string"
+				},
+				"Status": {
+					"type": "string"
+				},
+				"Error": {
+					"type": "null"
+				},
+				"year": {
+					"type": "string"
+				},
+				"industry_code_ANZSIC": {
+					"type": "string"
+				},
+				"industry_name_ANZSIC": {
+					"type": "string"
+				},
+				"rme_size_grp": {
+					"type": "string"
+				},
+				"variable": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string"
+				},
+				"unit": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
