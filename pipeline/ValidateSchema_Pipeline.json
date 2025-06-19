@@ -1,0 +1,7 @@
+{
+	"name": "ValidateSchema_Pipeline",
+	"properties": {
+		"description": "Validate schema and structure of the file before processing",
+		"annotations": []
+	}
+}
