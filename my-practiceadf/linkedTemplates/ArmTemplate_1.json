@@ -591,98 +591,78 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ParameterAzureSql')]",
+			"name": "[concat(parameters('factoryName'), '/LoadMultipleCSVJson_Destination')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"Servername": {
-							"value": "@dataset().Servername",
-							"type": "Expression"
-						},
-						"Databasename": {
-							"value": "@dataset().Databasename",
-							"type": "Expression"
-						},
-						"Username": {
-							"value": "@dataset().Username",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"Servername": {
-						"type": "string"
-					},
-					"Databasename": {
-						"type": "string"
-					},
-					"Username": {
-						"type": "string"
-					},
-					"Schema": {
-						"type": "string"
-					},
-					"Table": {
-						"type": "string"
-					}
+					"referenceName": "AzureBlobStorage",
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "Json",
 				"typeProperties": {
-					"schema": {
-						"value": "@dataset().Schema",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().Table",
-						"type": "Expression"
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Name": {
+							"type": "string"
+						},
+						"Category": {
+							"type": "string"
+						},
+						"Status": {
+							"type": "string"
+						},
+						"Error": {
+							"type": "null"
+						},
+						"year": {
+							"type": "string"
+						},
+						"industry_code_ANZSIC": {
+							"type": "string"
+						},
+						"industry_name_ANZSIC": {
+							"type": "string"
+						},
+						"rme_size_grp": {
+							"type": "string"
+						},
+						"variable": {
+							"type": "string"
+						},
+						"value": {
+							"type": "string"
+						},
+						"unit": {
+							"type": "string"
+						}
 					}
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Parameter_Dataset_DataLake')]",
+			"name": "[concat(parameters('factoryName'), '/LoadMultipleCSV_Source')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage",
+					"referenceName": "AzureBlobStorage",
 					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string"
-					},
-					"Filename": {
-						"type": "string"
-					}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().Filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
+						"type": "AzureBlobStorageLocation",
+						"container": "input"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
