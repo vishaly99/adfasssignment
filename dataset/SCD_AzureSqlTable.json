@@ -14,23 +14,37 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "empid",
+				"name": "surrKey",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "firstname",
-				"type": "varchar"
+				"name": "user_id",
+				"type": "int",
+				"precision": 10
 			},
 			{
-				"name": "salary",
-				"type": "decimal",
-				"precision": 10,
-				"scale": 2
+				"name": "subscription",
+				"type": "nvarchar"
+			},
+			{
+				"name": "price",
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "location",
-				"type": "varchar"
+				"type": "nvarchar"
+			},
+			{
+				"name": "pincode",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "isActive",
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {
