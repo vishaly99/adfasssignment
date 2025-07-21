@@ -1,0 +1,81 @@
+{
+	"name": "scd_two_dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "scd_two_source",
+						"type": "DatasetReference"
+					},
+					"name": "subscribefile"
+				},
+				{
+					"dataset": {
+						"referenceName": "SCD_AzureSqlTable",
+						"type": "DatasetReference"
+					},
+					"name": "subscribesink"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SCD_AzureSqlTable",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AddingIsActive"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> subscribefile",
+				"source(output(",
+				"          empid as integer,",
+				"          firstname as string,",
+				"          salary as decimal(10,2),",
+				"          location as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> subscribesink",
+				"subscribefile derive(isActive = 1) ~> AddingIsActive",
+				"subscribesink select(mapColumn(",
+				"          empid,",
+				"          firstname,",
+				"          salary,",
+				"          location",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"AddingIsActive sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          empid as integer,",
+				"          firstname as string,",
+				"          salary as decimal(10,2),",
+				"          location as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

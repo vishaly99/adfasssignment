@@ -35,7 +35,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "empscdone"
+			"table": "tbl_subscribe"
 		}
 	}
 }
